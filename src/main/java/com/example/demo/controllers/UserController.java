@@ -21,6 +21,14 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<String> createUser(@RequestBody User user) {
+        if(user.getPassword() == null || user.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().body("Password cannot be null or empty");
+        }
+
+        if(user.getUsername() == null || user.getUsername().isEmpty()) {
+            return ResponseEntity.badRequest().body("Username cannot be null or empty");
+        }
+
         userService.save(user);
         return ResponseEntity.ok("User created successfully");
     }

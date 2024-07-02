@@ -1,6 +1,5 @@
-package com.example.demo;
+package com.example.demo.controllers;
 
-import com.example.demo.controllers.UserController;
 import com.example.demo.entities.User;
 import com.example.demo.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,6 +63,62 @@ class UserControllerTests {
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("User created successfully"));
+    }
+
+    @Test
+    void testCreateUserEmptyPassword() throws Exception {
+        User user = new User();
+        user.setUsername("user1");
+        user.setPassword("");
+        user.setRole("ROLE_USER");
+
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Password cannot be null or empty"));
+    }
+
+    @Test
+    void testCreateUserNullPassword() throws Exception {
+        User user = new User();
+        user.setUsername("user1");
+        user.setPassword(null);
+        user.setRole("ROLE_USER");
+
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Password cannot be null or empty"));
+    }
+
+    @Test
+    void testCreateUserEmptyUsername() throws Exception {
+        User user = new User();
+        user.setUsername("");
+        user.setPassword("pass1");
+        user.setRole("ROLE_USER");
+
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Username cannot be null or empty"));
+    }
+
+    @Test
+    void testCreateUserNullUsername() throws Exception {
+        User user = new User();
+        user.setUsername(null);
+        user.setPassword("pass1");
+        user.setRole("ROLE_USER");
+
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Username cannot be null or empty"));
     }
 
     @Test
