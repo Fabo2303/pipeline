@@ -19,13 +19,5 @@ pipeline {
                 sh 'mvn test'
             }
         }
-
-        stage('SonarQube analysis') {
-            steps {
-                withSonarQubeEnv('My SonarQube Server') {
-                    sh 'mvn sonar:sonar'
-                }
-            }
-        }
     }
 }
