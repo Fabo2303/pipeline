@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Fabo2303/pipeline.git'
+                git url: 'https://github.com/Fabo2303/pipeline.git', branch: 'main'
             }
         }
 
@@ -18,6 +18,19 @@ pipeline {
             steps {
                 sh 'mvn test'
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up workspace'
+            deleteDir()
+        }
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
